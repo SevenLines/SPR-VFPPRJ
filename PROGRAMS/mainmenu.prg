@@ -1,0 +1,399 @@
+SET SYSMENU TO
+SET SYSMENU AUTOMATIC
+
+DEFINE PAD _0sy1227ra OF _MSYSMENU PROMPT "УП по ДФО" COLOR SCHEME 3
+DEFINE PAD _0sy1227rb OF _MSYSMENU PROMPT "УП по ЗФО" COLOR SCHEME 3 
+DEFINE PAD _0sy1227rc OF _MSYSMENU PROMPT "Контингент" COLOR SCHEME 3 
+DEFINE PAD _0sy1227rd OF _MSYSMENU PROMPT "Нагрузка" COLOR SCHEME 3 
+DEFINE PAD _0sy1227re OF _MSYSMENU PROMPT "Данные к расписанию" COLOR SCHEME 3 
+DEFINE PAD _0sy1227rf OF _MSYSMENU PROMPT "Печать расписания" COLOR SCHEME 3 
+DEFINE PAD _0sy1227rg OF _MSYSMENU PROMPT "Сервис" COLOR SCHEME 3 
+DEFINE PAD _0sy1227rh OF _MSYSMENU PROMPT "Выход" COLOR SCHEME 3 
+ON PAD _0sy1227ra OF _MSYSMENU ACTIVATE POPUP упподфо
+ON PAD _0sy1227rb OF _MSYSMENU ACTIVATE POPUP уппозфо
+ON PAD _0sy1227rc OF _MSYSMENU ACTIVATE POPUP конт
+ON PAD _0sy1227rd OF _MSYSMENU ACTIVATE POPUP нагрузка
+ON PAD _0sy1227re OF _MSYSMENU ACTIVATE POPUP распнагр
+ON PAD _0sy1227rf OF _MSYSMENU ACTIVATE POPUP печрасп
+ON PAD _0sy1227rg OF _MSYSMENU ACTIVATE POPUP сервис
+ON SELECTION PAD _0sy1227rh OF _MSYSMENU ;
+	DO _0sy1227rs ;
+	IN LOCFILE("SPR\PROGRAMS\MAINMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is MAINMENU?")
+
+* ---- УЧЕБНЫЕ ПЛАНЫ ПО ДНЕВНОЙ ФОРМЕ ОБУЧЕНИЯ ---- * 
+DEFINE POPUP упподфо MARGIN RELATIVE SHADOW COLOR SCHEME 4 
+DEFINE BAR 1 OF упподфо PROMPT "Учебный план" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 2 OF упподфо PROMPT "Рабочий УП" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 3 OF упподфо PROMPT "План практик" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 4 OF упподфо PROMPT "Рабочий график" SKIP FOR OnlyRasp <> '0'
+ON BAR 1 OF упподфо ACTIVATE POPUP уп 
+ON BAR 2 OF упподфо ACTIVATE POPUP руп 
+ON BAR 3 OF упподфо ACTIVATE POPUP рупп 
+ON BAR 4 OF упподфо ACTIVATE POPUP рабграф 
+* --- Учебный план (ДФО) ---*
+DEFINE POPUP уп MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF уп PROMPT "Выбрать" 
+DEFINE BAR 2 OF уп PROMPT "Новый"
+DEFINE BAR 3 OF уп PROMPT "Редактировать" 
+DEFINE BAR 4 OF уп PROMPT "Заголовки"
+DEFINE BAR 5 OF уп PROMPT "Атрибуты"
+DEFINE BAR 6 OF уп PROMPT "Список практик"
+DEFINE BAR 7 OF уп PROMPT "Типовой график"
+DEFINE BAR 8 OF уп PROMPT "Печать"
+DEFINE BAR 9 OF уп PROMPT "Удалить"
+DEFINE BAR 10 OF уп PROMPT "Копирование"
+ON SELECTION BAR 1 OF уп do form chooseup with 1
+ON SELECTION BAR 2 OF уп do form createshup 
+ON BAR 3 OF уп ACTIVATE POPUP редактиров
+ON SELECTION BAR 4 OF уп do form zagup with 1
+ON SELECTION BAR 5 OF уп do form attrup with 1
+ON SELECTION BAR 6 OF уп do form praktgrid with 1
+ON SELECTION BAR 7 OF уп do form typgraph with 1
+ON SELECTION BAR 8 OF уп do form printupd
+ON SELECTION BAR 9 OF уп do form delshup with 1
+ON SELECTION BAR 10 OF уп do form copyuppart with 1
+* - Редактирование УП (ДФО) - *
+DEFINE POPUP редактиров MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF редактиров PROMPT "Таблица"
+DEFINE BAR 2 OF редактиров PROMPT "Структура"
+ON SELECTION BAR 1 OF редактиров do form upgrid
+ON SELECTION BAR 2 OF редактиров do form editup
+* --- Рабочий учебный план (ДФО) --- *
+DEFINE POPUP руп MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF руп PROMPT "Редактировать"
+DEFINE BAR 2 OF руп PROMPT "Печать"
+ON SELECTION BAR 1 OF руп do form rupgrid
+ON SELECTION BAR 2 OF руп do form printrup
+* --- Рабочий план практик (ДФО) --- *
+DEFINE POPUP рупп MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF рупп PROMPT "Редактирование"
+DEFINE BAR 2 OF рупп PROMPT "Печать"
+ON SELECTION BAR 1 OF рупп do form ruppgrid1 with 1
+ON SELECTION BAR 2 OF рупп do form printrupp with 1
+* --- Рабочий график учебного процесса (ДФО) --- *
+DEFINE POPUP рабграф MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF рабграф PROMPT "Создать"
+DEFINE BAR 2 OF рабграф PROMPT "Редактировать"
+DEFINE BAR 3 OF рабграф PROMPT "Печать"
+ON SELECTION BAR 1 OF рабграф do form rgraphdgrid with 1 
+ON SELECTION BAR 2 OF рабграф do form rgraphdgrid with 2 
+ON SELECTION BAR 3 OF рабграф do form printrabgrd
+
+* ---- УЧЕБНЫЕ ПЛАНЫ ПО ЗАОЧНОЙ ФОРМЕ ОБУЧЕНИЯ ---- * 
+DEFINE POPUP уппозфо MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF уппозфо PROMPT "Учебный план" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 2 OF уппозфо PROMPT "Рабочий УП" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 3 OF уппозфо PROMPT "План практик" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 4 OF уппозфо PROMPT "Рабочий график" SKIP FOR OnlyRasp <> '0'
+ON BAR 1 OF уппозфо ACTIVATE POPUP упз
+ON BAR 2 OF уппозфо ACTIVATE POPUP рупз
+ON BAR 3 OF уппозфо ACTIVATE POPUP руппз 
+ON BAR 4 OF уппозфо ACTIVATE POPUP рабграфз
+* --- Учебный план (ЗФО) ---*
+DEFINE POPUP упз MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF упз PROMPT "Выбрать"
+DEFINE BAR 2 OF упз PROMPT "Новый"
+DEFINE BAR 3 OF упз PROMPT "Редактировать"
+DEFINE BAR 4 OF упз PROMPT "Заголовки"
+DEFINE BAR 5 OF упз PROMPT "Атрибуты"
+DEFINE BAR 6 OF упз PROMPT "Список практик"
+DEFINE BAR 7 OF упз PROMPT "Типовой график"
+DEFINE BAR 8 OF упз PROMPT "Печать"
+DEFINE BAR 9 OF упз PROMPT "Удалить"
+DEFINE BAR 10 OF упз PROMPT "Копирование"
+ON SELECTION BAR 1 OF упз do form chooseup with 2
+ON SELECTION BAR 2 OF упз do form createshupz
+ON SELECTION BAR 3 OF упз do form upzgrid
+ON SELECTION BAR 4 OF упз do form zagup with 2
+ON SELECTION BAR 5 OF упз do form attrup with 2
+ON SELECTION BAR 6 OF упз do form praktgrid with 2
+ON SELECTION BAR 7 OF упз do form typgraph with 2 
+ON SELECTION BAR 8 OF упз do form printupz
+ON SELECTION BAR 9 OF упз do form delshup with 2
+ON SELECTION BAR 10 OF упз do form copyuppart with 2
+* --- Рабочий учебный план (ЗФО) --- *
+DEFINE POPUP рупз MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF рупз PROMPT "Редактировать"
+DEFINE BAR 2 OF рупз PROMPT "Печать"
+ON SELECTION BAR 1 OF рупз do form rupzgrid
+ON SELECTION BAR 2 OF рупз do form printrupz
+* --- Рабочий план практик (ЗФО) --- *
+DEFINE POPUP руппз MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF руппз PROMPT "Редактировать"
+DEFINE BAR 2 OF руппз PROMPT "Печать"
+ON SELECTION BAR 1 OF руппз do form ruppgrid1 with 2
+ON SELECTION BAR 2 OF руппз do form printrupp with 2
+* --- Рабочий график учебного процесса (ЗФО) --- *
+DEFINE POPUP рабграфз MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF рабграфз PROMPT "Создать"
+DEFINE BAR 2 OF рабграфз PROMPT "Редактировать"
+DEFINE BAR 3 OF рабграфз PROMPT "Печать"
+ON SELECTION BAR 1 OF рабграфз do form rgraphzgrid with 1 
+ON SELECTION BAR 2 OF рабграфз do form rgraphzgrid with 2 
+ON SELECTION BAR 3 OF рабграфз do form printrabgrz
+
+* ---- КОНТИНГЕНТ ---- *
+DEFINE POPUP конт MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF конт PROMPT "План контингента"  
+DEFINE BAR 2 OF конт PROMPT "Объединение и переформирование контингента"  
+ON BAR 1 OF конт ACTIVATE POPUP планконт
+ON BAR 2 OF конт ACTIVATE POPUP объед
+* --- План контингента --- *
+DEFINE POPUP планконт MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF планконт PROMPT "Таблица"
+DEFINE BAR 2 OF планконт PROMPT "Структура" 
+DEFINE BAR 3 OF планконт PROMPT "Печать" 
+ON SELECTION BAR 1 OF планконт do form kontgrid1
+ON SELECTION BAR 2 OF планконт do form editkont
+ON SELECTION BAR 3 OF планконт do form printkont
+* --- Объединение и переформирование контингента --- *
+DEFINE POPUP объед MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF объед PROMPT "Создать" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 2 OF объед PROMPT "Просмотр"
+DEFINE BAR 3 OF объед PROMPT "Редактировать объединения на сем. и лаб."
+DEFINE BAR 4 OF объед PROMPT "Печать"
+*DEFINE BAR 4 OF объед PROMPT "Создать (старый)"
+ON SELECTION BAR 1 OF объед do form obkont1
+ON SELECTION BAR 2 OF объед do form obkontres1 with 2
+ON SELECTION BAR 3 OF объед do form obkontgrpres 
+ON SELECTION BAR 4 OF объед do form printobkont
+*ON SELECTION BAR 4 OF объед do form obkont
+
+* ---- НАГРУЗКА ---- *
+DEFINE POPUP нагрузка MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF нагрузка PROMPT "Нормы времени" 
+DEFINE BAR 2 OF нагрузка PROMPT "РАСЧЕТ" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 3 OF нагрузка PROMPT "НАГРУЗКА" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 4 OF нагрузка PROMPT "ПЕЧАТЬ" SKIP FOR OnlyRasp <> '0'
+ON SELECTION BAR 1 OF нагрузка do form ntgrid
+ON SELECTION BAR 2 OF нагрузка do form calcnagr
+ON SELECTION BAR 3 OF нагрузка do form nagruzka
+ON SELECTION BAR 4 OF нагрузка do form printnagr1
+
+* ---- ДАННЫЕ К РАСПИСАНИЮ ---- *
+DEFINE POPUP распнагр MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF распнагр PROMPT "Сформировать данные по распределению" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 2 OF распнагр PROMPT "Фильтрация"
+DEFINE BAR 3 OF распнагр PROMPT "Редактировать"
+DEFINE BAR 4 OF распнагр PROMPT "Печать"
+DEFINE BAR 5 OF распнагр PROMPT "Пожелания"
+ON SELECTION BAR 1 OF распнагр do genrn IN LOCFILE("SPR\PROGRAMS\MAINMENU" ,"MPX;MPR|FXP;PRG" ,"WHERE is MAINMENU?")
+ON SELECTION BAR 2 OF распнагр do form pargridraspnagr with 1
+ON SELECTION BAR 3 OF распнагр do form raspnagrgrid 
+ON SELECTION BAR 4 OF распнагр do form printraspnagr
+ON BAR 5 OF распнагр ACTIVATE POPUP пожелания
+* --- Пожелания --- *
+DEFINE POPUP пожелания MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF пожелания PROMPT "Преподавателей"
+DEFINE BAR 2 OF пожелания PROMPT "Аудиторий"
+DEFINE BAR 3 OF пожелания PROMPT "Контингента"
+ON SELECTION BAR 1 OF пожелания do form wishprep
+ON SELECTION BAR 2 OF пожелания do form wishaud
+ON SELECTION BAR 3 OF пожелания do form wishkont
+
+
+DEFINE POPUP печрасп MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF печрасп PROMPT "Сетка ДФО"
+DEFINE BAR 2 OF печрасп PROMPT "Сетка ЗФО"
+DEFINE BAR 3 OF печрасп PROMPT "Сессия ДФО"
+DEFINE BAR 4 OF печрасп PROMPT "Карточки преподавателей"
+DEFINE BAR 5 OF печрасп PROMPT "Карточки аудиторий"
+DEFINE BAR 6 OF печрасп PROMPT "Изменение расписания"
+ON SELECTION BAR 1 OF печрасп do form printsetrasp with 1
+ON SELECTION BAR 2 OF печрасп do form printsetraspz
+ON SELECTION BAR 3 OF печрасп do form printsessia
+ON SELECTION BAR 4 OF печрасп do form printkartprep
+ON SELECTION BAR 5 OF печрасп do form printkartaud
+ON SELECTION BAR 6 OF печрасп do form printraspislog
+
+* ---- СЕРВИС ---- *
+DEFINE POPUP сервис MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF сервис PROMPT "Словари"
+DEFINE BAR 2 OF сервис PROMPT "Настроки"
+DEFINE BAR 3 OF сервис PROMPT "Утилиты" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 4 OF сервис PROMPT "Импорт/Экспорт УП" SKIP FOR OnlyRasp <> '0'
+ON BAR 1 OF сервис ACTIVATE POPUP словари
+ON BAR 2 OF сервис ACTIVATE POPUP настройки
+ON SELECTION BAR 3 OF сервис do form datautils
+ON BAR 4 OF сервис ACTIVATE POPUP имэкспуп
+* --- Словари --- *
+DEFINE POPUP словари MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF словари PROMPT "Дисциплины" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 2 OF словари PROMPT "Кафедры" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 3 OF словари PROMPT "Практики" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 4 OF словари PROMPT "Формы обучения" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 5 OF словари PROMPT "Филиалы" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 6 OF словари PROMPT "Факультеты" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 7 OF словари PROMPT "Обозначения потоков" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 8 OF словари PROMPT "Преподаватели" 
+DEFINE BAR 9 OF словари PROMPT "Преподавататели для распределения нагрузки"
+DEFINE BAR 10 OF словари PROMPT "Определение преподавателей попадающих в расписание" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 11 OF словари PROMPT "Распределение аудиторий по кафедрам"
+DEFINE BAR 12 OF словари PROMPT "Аудитории"
+DEFINE BAR 13 OF словари PROMPT "Диспетчеры"
+DEFINE BAR 14 OF словари PROMPT "Расписание звонков"
+ON SELECTION BAR 1 OF словари do form editpred &&editvac with "Редактирование словаря дисциплин", "Предмет", "vacpred", "id_15", "pred"
+ON SELECTION BAR 2 OF словари do form editvac with "Редактирование словаря кафедр", "Кафедра", "vackaf", "id_17", "kaf"
+ON SELECTION BAR 3 OF словари do form editvacprakt && editvac with "Редактирование словаря практик", "Практика", "vacprakt", "id_24", "prakt"
+*ON SELECTION BAR 4 OF словари do form editvac with "Редактирование словаря форм обучения", "Форма обучения", "vacfobuch", "id_3", "fobuch"
+ON SELECTION BAR 4 OF словари do form editvacfobuch
+*ON SELECTION BAR 5 OF словари do form editvac with "Редактирование словаря филиалов", "Филиал", "vacfil", "id_4", "fil"
+ON SELECTION BAR 5 OF словари do form editvacfil
+ON SELECTION BAR 6 OF словари do form editvac with "Редактирование словаря факультетов", "Факультет", "vacfac", "id_5", "fac"
+ON SELECTION BAR 7 OF словари do form editvac with "Редактирование словаря обозначений потоков", "Обозначение", "vacaobozn", "id_6", "aobozn"
+ON SELECTION BAR 8 OF словари do form prepgrid &&editvac with "Редактирование словаря преподавателей", "Преподаватель", "prepods", "id_61", "preps"
+ON SELECTION BAR 9 OF словари do form rnprepods
+ON SELECTION BAR 10 OF словари do form raspprep
+ON SELECTION BAR 11 OF словари do form rnaud
+ON SELECTION BAR 12 OF словари do form audgrid &&editvac with "Редактирование словаря аудиторий", "Аудитория", "auditories", "id_60", "obozn"
+ON SELECTION BAR 13 OF словари do form editvac with "Редактирование словаря диспетчеров", "Диспетчер", "vacdisp", "id_75", "disp"
+ON SELECTION BAR 14 OF словари do form editvacpara
+* --- Настройки --- *
+DEFINE POPUP настройки MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF настройки PROMPT "Дата начала учебного года" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 3 OF настройки PROMPT "Учебное заведение" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 4 OF настройки PROMPT "Доступ к данным АРМа Кафедра" SKIP FOR OnlyRasp <> '0'
+DEFINE BAR 5 OF настройки PROMPT "Ресурсы диспетчеров"
+ON SELECTION BAR 1 OF настройки do form editbegyear
+ON SELECTION BAR 3 OF настройки do form edituchzav
+ON SELECTION BAR 4 OF настройки do form editkafopts
+ON BAR 5 OF настройки ACTIVATE POPUP ресурсыдиспетчеров
+* --- импорт/экспорт УП*
+DEFINE POPUP имэкспуп MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF имэкспуп PROMPT "Экспорт в формат АРМ Кафедра"
+DEFINE BAR 2 OF имэкспуп PROMPT "Импорт в базу данных"
+ON SELECTION BAR 1 OF имэкспуп do form importdata
+ON SELECTION BAR 2 OF имэкспуп do form exportdata
+* -- Ресурсы диспетчеров -- *
+DEFINE POPUP ресурсыдиспетчеров MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF ресурсыдиспетчеров PROMPT "Аудитории"
+DEFINE BAR 2 OF ресурсыдиспетчеров PROMPT "Преподаватели"
+DEFINE BAR 3 OF ресурсыдиспетчеров PROMPT "Контингент"
+ON SELECTION BAR 1 OF ресурсыдиспетчеров do form resgrid with 1
+ON SELECTION BAR 2 OF ресурсыдиспетчеров do form resgrid with 2
+ON SELECTION BAR 3 OF ресурсыдиспетчеров do form resgrid with 3
+
+PROCEDURE _0sy1227rs
+ iniwrite(IniPath,"Reports",ReportPath)
+ if type('lcn')='N'
+  if lcn  > 0 
+   q = "UPDATE sysoptions SET upd="+str(cur_upd)+", upz="+str(cur_upz)
+   k = sqlexec(lcn, q)
+   if k <= 0
+    aerror(asd)
+    messagebox(asd[2])
+   endif
+   
+   sqldisconnect(lcn)
+  endif
+ endif
+ release UPtbrDesktop
+ release lcn
+ release all
+ set sysmenu to default
+* _screen.closable = .T.
+ clear events
+ IF _VFP.StartMode = 0  
+  * Настройки только для режима отладки  
+  ON SHUTDOWN
+ ELSE  
+  QUIT
+  * Настройки только для готового приложения  
+ ENDIF
+ENDPROC
+
+PROCEDURE genrn
+ Local q, k
+ 
+ if messagebox("Вы действительно хотите сформировать данные к расписанию?" ,4)=6
+  q = "EXEC genraspnagr1 " + CurYear
+  WAIT WINDOW "Эта операция может потребовать некоторого времени..." NOWAIT 
+  k = sqlexec(lcn, q)
+  if k <= 0
+   aerror(asd)
+   messagebox(asd[2])
+   return .F.
+  endif
+
+  do form raspnagrgrid
+ endif 
+ENDPROC
+
+PROCEDURE facres
+ LParameters pView
+ 
+ Local pMainSQL, pLGSQL, pRGSQL, pLGView, pRGView, pscSQLTable, pscVFPid, pscSQLid, pscVFPFields, pscSQLFields,	pLabelCaption, pFormCaption
+
+ if pView = 1
+  pMainSQL = "select id_5 id_,fac from vacfac order by fac"
+  pLGSQL = "SELECT a.obozn,f.*,k.korp "+;
+			"FROM audfac f "+;
+			 "LEFT JOIN auditories a ON f.aud=a.id_60 "+;
+			 "LEFT JOIN vackorp k ON k.id_67=a.korp "+;
+			"WHERE f.fac=$fac "+;
+			"ORDER BY k.korp,a.obozn"
+  pRGSQL = "SELECT a.id_60 aud,a.obozn,$fac fac,k.korp "+;
+			"FROM auditories a "+;
+			 "LEFT JOIN audfac f ON f.aud=a.id_60 and f.fac=$fac "+;
+			 "LEFT JOIN vackorp k ON k.id_67=a.korp "+;
+			"WHERE f.fac is NULL "+;
+			"ORDER BY k.korp,a.obozn"
+  pLGView = "obozn,Аудитория,100;korp,Корпус,50"
+  pRGView = "obozn,Аудитория,100;korp,Корпус,50"
+  pscSQLTable = "audfac"
+  pscVFPid = "id_76"
+  pscSQLid = "id_76"
+  pscVFPFields = "fac,aud"
+  pscSQLFields = "fac,aud"
+  pLabelCaption = "Факультет"
+  pFormCaption = ""
+ endif
+ if pView = 2
+  pMainSQL = "select id_5 id_,fac from vacfac order by fac"
+  pLGSQL = "SELECT p.preps,f.* "+;
+			"FROM prepfac f "+;
+			 "LEFT JOIN prepods p ON f.prep=p.id_61 "+;
+			"WHERE f.fac=$fac "+;
+			"ORDER BY p.preps"
+  pRGSQL = "SELECT p.id_61 prep,p.preps,$fac fac "+;
+			"FROM prepods p "+;
+			 "LEFT JOIN prepfac f ON f.prep=p.id_61 and f.fac=$fac "+;
+			"WHERE f.fac is NULL "+;
+			"ORDER BY p.preps"
+  pLGView = "preps,Преподаватель,100"
+  pRGView = "preps,Преподаватель,100"
+  pscSQLTable = "prepfac"
+  pscVFPid = "id_77"
+  pscSQLid = "id_77"
+  pscVFPFields = "fac,prep"
+  pscSQLFields = "fac,prep"
+  pLabelCaption = "Факультет"
+  pFormCaption = ""
+ endif
+ if pView = 3
+  pMainSQL = "select id_75 id_,disp from vacdisp order by disp"
+  pLGSQL = "SELECT vf.fac facult,f.* "+;
+			"FROM dispfac f "+;
+			 "LEFT JOIN vacfac vf ON f.fac=vf.id_5 "+;
+			"WHERE f.disp=$fac "+;
+			"ORDER BY vf.fac"
+  pRGSQL = "SELECT vf.id_5 fac,vf.fac facult,$fac disp "+;
+			"FROM vacfac vf "+;
+			 "LEFT JOIN dispfac f ON f.fac=vf.id_5 and f.disp=$fac "+;
+			"WHERE f.fac is NULL "+;
+			"ORDER BY vf.fac"
+  pLGView = "facult,Факультет,100"
+  pRGView = "facult,Факультет,100"
+  pscSQLTable = "dispfac"
+  pscVFPid = "id_78"
+  pscSQLid = "id_78"
+  pscVFPFields = "fac,disp"
+  pscSQLFields = "fac,disp"
+  pLabelCaption = "Диспетчеры"
+  pFormCaption = ""
+ endif
+
+ do form lrgform with pMainSQL, pLGSQL, pRGSQL, pLGView, pRGView, pscSQLTable, pscVFPid, pscSQLid, pscVFPFields, pscSQLFields, pLabelCaption, pFormCaption
+ENDPROC
+
+

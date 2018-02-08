@@ -1,0 +1,41 @@
+lparameters lcalias, pshup
+local q, k, p_
+
+
+q = "EXEC show_prakt "+str(pshup)
+k = sqlexec(lcn, q, 'lccur')
+if k <= 0
+ aerror(asd)
+ messagebox(asd[2])
+else
+ SELECT * FROM lccur WHERE depth = 1 INTO CURSOR 'lcd1' ORDER BY sem, id_16
+ SELECT * FROM lccur WHERE depth = 2 INTO CURSOR 'lcd2' ORDER BY sem, id_16
+ AFIELDS(asd)
+ CREATE TABLE (lcalias) FROM ARRAY asd
+ select lcd1
+ go top
+ scan all
+  p_ = id_16
+  select (lcalias)
+  append blank
+  replace id_16 with lcd1.id_16, prakt with lcd1.prakt, sem with lcd1.sem, week with lcd1.week, parent with lcd1.parent, depth with lcd1.depth, kaf WITH lcd1.kaf, kafid WITH lcd1.kafid, praktid WITH lcd1.praktid, spclntion WITH lcd1.spclntion, spcid WITH lcd1.spcid
+  select lcd2
+  go top
+
+  scan for parent = p_
+   select (lcalias)
+   append blank
+   replace id_16 with lcd2.id_16, prakt with lcd2.prakt, sem with lcd2.sem, week with lcd2.week, parent with lcd2.parent, depth with lcd2.depth, kaf WITH lcd2.kaf, kafid WITH lcd2.kafid, praktid WITH lcd2.praktid, spclntion WITH lcd2.spclntion, spcid WITH lcd2.spcid
+   select lcd2
+  endscan
+
+  select lcd1
+ endscan
+
+ select lcd1
+ use
+ select lcd2
+ use
+ select lccur
+ use
+endif

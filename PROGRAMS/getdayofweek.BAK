@@ -1,0 +1,24 @@
+Lparameters pdate
+Local lcdow, RetVal
+
+lcdow = DOW(pdate)
+do case 
+ case lcdow = 1
+  RetVal = "онмедекэмхй"
+ case lcdow = 2
+  RetVal = "брнпмхй"
+ case lcdow = 3
+  RetVal = "япедю"
+ case lcdow = 4
+  RetVal = "вербепц"
+ case lcdow = 5
+  RetVal = "оърмхжю"
+ case lcdow = 6
+  RetVal = "ясаанрю"
+ case lcdow = 7
+  RetVal = "бняйпеяемэе"
+ otherwise 
+  RetVal = "???"
+endcase
+
+return RetVal

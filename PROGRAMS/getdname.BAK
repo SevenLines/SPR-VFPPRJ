@@ -1,0 +1,16 @@
+Local dirname
+Local com
+
+if !directory(ReportPath)
+ ReportPath = SysPath + "Reports"
+endif
+
+com = "SET DEFAULT TO " + '"' + ReportPath + '"'
+&com
+dirname = GETDIR()
+if !empty(dirname)
+ ReportPath = dirname
+endif
+CD("FreeTables")
+
+return dirname

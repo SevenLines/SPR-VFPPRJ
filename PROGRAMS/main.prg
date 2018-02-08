@@ -1,0 +1,88 @@
+close tables
+
+PUBLIC UPtbrDesktop
+public cur_upd && текущий УП (ДФО)
+public cur_upz && текущий УП (ЗФО)
+public lcn && SQL подключение
+public OdbcAlias && ODBC алиас
+public UserName && имя пользователя
+public UserPassword && пароль пользователя :))
+public ExcelPath && путь до excel
+public SysPath && путь до системы
+public OnlyRasp && необходимо только данные к расписанию (врем)
+public ListKafs && список кафедр для фильтрации данных к расписанию (врем)
+public CurYear && текущий год
+public IniPath && путь к ini-файлу
+public ReportPath && путь в отчетам
+public YearBeginDate && дата начала учебного года
+public UchZavID && код учебного заведения
+
+Local lcf, stroka, versionInfo
+
+versionInfo = "неизвестна"
+OnlyRasp = '0'
+IF _VFP.StartMode = 0  
+ * Настройки только для режима отладки  
+ SysPath = "C:\VFPPRJ\SPR\"
+ELSE
+ SysPath=SUBSTR(SYS(16,1), 1, RAT("\", SYS(16,1)))
+ENDIF
+
+IniPath = SysPath+"SPR.ini"
+
+OdbcAlias = iniread(IniPath,"ODBCALIAS")
+UserName = iniread(IniPath,"USERNAME")
+UserPassword = iniread(IniPath,"USERPASSWORD")
+ExcelPath = iniread(IniPath,"EXCELPATH")
+OnlyRasp = iniread(IniPath,"ONLYSCHEDULE")
+ListKafs = iniread(IniPath,"LISTKAFS")
+versionInfo = iniread(IniPath,"VERSION")
+CurYear = iniread(IniPath,"CURYEAR")
+ReportPath = iniread(IniPath, "REPORTS")
+
+if empty(ReportPath)
+ ReportPath = SysPath + "Reports"
+endif
+
+declare integer GenRep IN SysPath+"Classes\GenRep.dll" string @st1, string @st2, string @st3, integer i1 &&, integer i2
+
+
+CD SysPath+"FreeTables"
+SET CLASSLIB TO mygrid
+SET CLASSLIB TO vacbrowser ADDITIVE
+SET CLASSLIB TO sprclasses ADDITIVE 
+SET DATE GERMAN
+SET CENTURY OFF
+SET MULTILOCKS ON
+SET DELETED ON
+
+UPtbrDesktop = CREATEOBJ('uptoolbar')
+_screen.caption = "Система подготовки данных для проектирования расписания [версия-"+versionInfo+"]"
+_screen.windowstate = 2 
+_screen.closable = .T.
+do form chooseDC
+ON SHUTDOWN DO _0sy1227rs 	IN "MAINMENU.prg" 
+read events
+
+DEFINE CLASS rescol AS CHECKBOX
+ 
+ Caption = ""
+ autosize = .T.
+ BackStyle = 0
+ visible = .T.
+ 
+ PROCEDURE KEYPRESS
+  LPARAMETERS nKeyCode, nShiftAltCtrl
+  
+  Local lcfld, lctbl, lcown, lcobj
+  if !inlist(nKeyCode, 4, 5, 9, 19, 24)
+   lcfld = right(this.parent.controlsource, len(this.parent.controlsource) - AT(".",this.parent.controlsource))
+   lctbl = left(this.parent.controlsource, AT(".",this.parent.controlsource))
+   lcobj = this.parent.parent.parent.obj
+   do form editresprop with lctbl, lcfld, "", lcobj
+  endif   
+ ENDPROC
+ENDDEFINE
+
+
+

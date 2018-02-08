@@ -1,0 +1,63 @@
+LParameters pWord
+
+Local lcWord
+Local lcMiddle, lcPos, lcLen, LeftPart, RightPart, LeftPerc, RightPerc
+Local notAv, lcselect
+
+
+lcWord = rtrim(pWord)
+
+LeftPart = GetShortCom(lcWord, .F.)
+if !empty(LeftPart)
+ return LeftPart
+endif
+
+lcLen = len(lcWord)
+lcMiddle = round(lclen/2,0)
+
+lcKOL =  KindOfLetter(substr(lcWord, lcMiddle+1, 1)) 
+
+if lcKOL = 3
+  notAv = .T.
+ else
+  notAv = .F. 
+endif
+
+lcPos = lcMiddle
+do while lcPos > 0
+ if notAv
+  if KindOfLetter(substr(lcWord, lcPos, 1)) = 1
+   notAv = .F.
+  endif
+ else
+  if KindOfLetter(substr(lcWord, lcPos, 1)) = 3
+   exit
+  endif
+ endif
+ lcPos = lcPos - 1
+enddo
+LeftPart = left(lcWord, lcPos)
+LeftPerc = iif(lclen=0,0,(lcPos)/lclen)
+
+if lcKOL = 1
+  notAv = .T.
+ else
+  notAv = .F. 
+endif
+
+lcPos = lcMiddle+1
+do while lcPos < lclen
+ if (KindOfLetter(substr(lcWord, lcPos, 1)) = 1 and !notAv)or((KindOfLetter(substr(lcWord, lcPos, 1)) = 3 and notAv))
+  exit
+ endif
+ lcPos = lcPos + 1
+enddo 
+
+RightPart = left(lcWord, lcPos-1)
+lcPos = lclen - lcPos +1
+RightPerc = iif(lclen=0,0,lcPos/lclen)
+if RightPerc > LeftPerc
+ return RightPart+"."
+else 
+ return LeftPart+"."
+endif
